@@ -22,14 +22,13 @@ export default class LockTab extends React.PureComponent<{}, State> {
     super();
     this.state = {
       tabs: [],
+      sort: null,
     };
+
+    this._timeLeftInterval = window.setInterval(this.forceUpdate.bind(this), 1000);
   }
 
-  componentWillMount() {
-    this._timeLeftInterval = window.setInterval(this.forceUpdate.bind(this), 1000);
-
-    // TODO: THIS WILL BREAK. This is some async stuff inside a synchronous call. Fix this, move
-    // the state into a higher component.
+  componentDidMount() {
     chrome.tabs.query({}, tabs => { this.setState({tabs}); });
   }
 
